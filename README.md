@@ -87,6 +87,14 @@ sizes, system prompt blocks, tools ranked by size, messages, thinking/effort set
 and token usage parsed from the stream. Use `--prefix P` for a specific exchange and
 `--captures DIR` for another directory.
 
+## Example
+
+`examples/synthetic/` holds a fully artificial sample capture: the same structure as a
+real session (four system blocks with cache-control breakpoints, a mixed tool list, a
+tool exchange, a streamed response with thinking and text deltas) with entirely
+fictional content. `examples/synthetic/anatomy-report.txt` shows what `analyze.py`
+produces from it. See `examples/README.md` for provenance and regeneration.
+
 ## Turning the tap off
 
     venv/Scripts/python.exe scripts/tap_off.py --remove-ca

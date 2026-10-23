@@ -359,6 +359,30 @@ def doctor_runs(work):
     assert {"python", "skill venv", "mitmproxy", "settings wired"} <= names, names
 
 
+@test
+def example_fixture_valid(work):
+    """The committed synthetic example is well-formed and analyzes cleanly."""
+    example = SKILL / "examples" / "synthetic"
+    idx = read_index(example)
+    assert idx and idx[0]["status"] == 200, idx
+    assert idx[0]["path"].startswith("/v1/messages"), idx
+    prefix = idx[0]["id"]
+    req = json.loads((example / f"{prefix}-request.json").read_text(encoding="utf-8"))
+    assert len(req["system"]) == 4 and len(req["tools"]) == 15, "fixture shape drifted"
+    assert len(req["messages"]) == 4, "fixture shape drifted"
+    assert req["system"][2].get("cache_control", {}).get("ttl") == "1h"
+    meta = json.loads((example / f"{prefix}-meta.json").read_text(encoding="utf-8"))
+    assert meta["request_headers"]["Authorization"] == "[omitted]", "fixture must show redaction"
+    sse = (example / f"{prefix}-response.sse.txt").read_text(encoding="utf-8", errors="replace")
+    assert "event: message_start" in sse and "event: message_stop" in sse
+    proc = subprocess.run([sys.executable, str(SCRIPTS / "analyze.py"),
+                           "--captures", str(example)],
+                          capture_output=True, text=True, encoding="utf-8",
+                          errors="replace", timeout=120)
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert "Request anatomy" in proc.stdout
+
+
 def main() -> int:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     work = Path(tempfile.mkdtemp(prefix="cc-tap-tests-"))
@@ -372,6 +396,7 @@ def main() -> int:
     proxy_end_to_end(work)
     tap_on_off_lifecycle(work)
     doctor_runs(work)
+    example_fixture_valid(work)
     counts = {s: sum(1 for _, st, _ in RESULTS if st == s) for s in ("PASS", "FAIL", "SKIP")}
     print(f"\nSUMMARY: {counts}")
     (work / "results.json").write_text(json.dumps(RESULTS, indent=2), encoding="utf-8")

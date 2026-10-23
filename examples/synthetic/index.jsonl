@@ -1,0 +1,1 @@
+{"id": "20260101-091500-0001", "utc": "2026-01-01T14:14:58Z", "method": "POST", "host": "api.anthropic.com", "path": "/v1/messages?beta=true", "status": 200, "model": "claude-opus-5-5", "streamed": true, "request_bytes": 18298, "duration_s": 4.212, "error": null}

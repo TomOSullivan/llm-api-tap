@@ -1,0 +1,53 @@
+# Request anatomy: 20260101-091500-0001
+total request JSON chars: 18,298
+top-level keys and sizes:
+  tools                       6,668 chars
+  messages                    5,873 chars
+  system                      5,391 chars
+  context_management             92 chars  = {"edits": [{"type": "clear_tool_uses", "keep": "last", "trigger": {"input_tokens": 80000}}]}
+  thinking                       43 chars  = {"type": "enabled", "display": "condensed"}
+  metadata                       39 chars  = {"user_id": "user_mesa_example_7f3a2b"}
+  output_config                  18 chars  = {"effort": "high"}
+  model                          17 chars  = "claude-opus-5-5"
+  max_tokens                      6 chars  = 128000
+  stream                          4 chars  = true
+
+## system: 4 block(s)
+  [0]      219 chars  :: You are Mesa, a coding agent working in the user's terminal. You read and edit files, run commands, and explai...
+  [1]      105 chars  :: Environment: linux x86_64, bash 5.2, Node 22. Workspace: /home/dev/ledger-web, branch fix/txn-pagination.
+  [2]    1,563 chars  cache_control={"type": "ephemeral", "ttl": "1h"}  :: # Tool rules Tools exist to serve the task, not to perform diligence. Think first, then call with intent. Read...
+  [3]    3,203 chars  cache_control={"type": "ephemeral", "ttl": "1h"}  :: # Mesa operating manual ## The working loop Move through four phases and do not skip ahead. Understand. Reprod...
+
+## tools: 15 (6,668 chars total)
+       913  run_command  :: Runs a shell command in the workspace root with the user's environment. The defa...
+       746  spawn_subtask  :: Starts an isolated sub-agent with a fresh context window to investigate a bounde...
+       643  edit_file  :: Applies an exact string replacement in a file. old_string must occur exactly onc...
+       596  read_file  :: Reads a file from the workspace and returns its contents with line numbers. Use ...
+       585  search_code  :: Searches workspace files for a regular expression and returns matching lines wit...
+       553  ask_user_question  :: Presents one or more questions to the user with optional multiple-choice answers...
+       543  update_task_plan  :: Replaces the current task plan. The plan is a short ordered list of steps with a...
+       389  write_file  :: Writes content to a file, creating parent directories as needed. Overwrites the ...
+       373  fetch_url  :: Retrieves an HTTP or HTTPS URL and returns the body as text, converting HTML to ...
+       281  list_directory  :: Lists one level of a directory with names, types, and sizes. Use it for orientat...
+       234  mcp__browser__read_page  :: Returns the readable text of the current browser page, truncated to max_chars.
+       230  mcp__browser__navigate  :: Opens a URL in the headless browser and returns the page title and final URL.
+       221  mcp__builds__tail_logs  :: Returns the last N lines of a CI build log.
+       212  mcp__builds__get_status  :: Returns the status of the most recent CI build for a branch.
+       119  deferred_tool_slot  :: 
+
+## messages: 4 (5,873 chars)
+  [0] user          3,087 chars  :: # Workspace briefing: ledger-web ledger-web is a small double-entry bookkeeping service: a...
+  [1] system        1,121 chars  :: ## Session context, refreshed by the harness - Time: 2026-01-01T14:15:02Z - Branch fix/txn...
+  [2] assistant       909 chars  :: 
+  [3] user            625 chars  :: 
+
+thinking: {"type": "enabled", "display": "condensed"}
+
+max_tokens: 128000
+
+context_management: {"edits": [{"type": "clear_tool_uses", "keep": "last", "trigger": {"input_tokens": 80000}}]}
+
+output_config: {"effort": "high"}
+
+## response usage: {"input_tokens": 3, "cache_creation_input_tokens": 14196, "cache_read_input_tokens": 37748, "output_tokens": 287, "cache_creation": {"ephemeral_5m_input_tokens": 0, "ephemeral_1h_input_tokens": 14196}, "service_tier": "standard", "output_tokens_details": {"thinking_tokens": 91}, "iterations": [{"type": "message", "input_tokens": 3, "output_tokens": 287, "cache_read_input_tokens": 37748, "cache_creation_input_tokens": 14196, "cache_creation": {"ephemeral_5m_input_tokens": 0, "ephemeral_1h_input_tokens": 14196}}]}
+stop_reason: end_turn; content blocks: {'thinking': 1, 'text': 1}
