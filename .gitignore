@@ -1,0 +1,17 @@
+# Local runtime state - never share or commit these
+venv/
+captures/
+tap-state.json
+*.tap-backup
+*.mitm
+flows*.mitm
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# OS
+.DS_Store
+Thumbs.db
